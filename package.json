@@ -1,0 +1,23 @@
+{
+  "name": "coursera-nodejs",
+  "version": "1.0.0",
+  "description": "created for coursera course",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo 'program testing'",
+    "start": "node index.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/henryle-n/Nodejs-Practice.git"
+  },
+  "keywords": [
+    "coursera"
+  ],
+  "author": "Henry Le",
+  "license": "UNLICENSED",
+  "bugs": {
+    "url": "https://github.com/henryle-n/Nodejs-Practice/issues"
+  },
+  "homepage": "https://github.com/henryle-n/Nodejs-Practice#readme"
+}
