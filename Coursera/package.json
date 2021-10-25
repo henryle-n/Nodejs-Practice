@@ -1,0 +1,13 @@
+{
+  "name": "coursera-node",
+  "version": "1.0.0",
+  "description": "intro to nodejs",
+  "main": "index.js"
+  ,"type": "module"
+  ,"scripts": {
+    "test": "echo test is run"
+    ,"start": "node index.js"
+  },
+  "author": "Henry Le",
+  "license": "UNLICENSED"
+}
