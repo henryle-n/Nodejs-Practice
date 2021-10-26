@@ -1,0 +1,13 @@
+{
+  "name": "node-http",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "type": "module"
+  ,"scripts": {
+    "test": "echo testing"
+    ,"start": "node index.js"
+  },
+  "author": "Henry Le",
+  "license": "ISC"
+}
