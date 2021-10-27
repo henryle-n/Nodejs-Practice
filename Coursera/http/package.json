@@ -3,10 +3,10 @@
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
-  "type": "module"
-  ,"scripts": {
-    "test": "echo testing"
-    ,"start": "node index.js"
+  "type":"commonjs",
+  "scripts": {
+    "test": "echo testing",
+    "start": "node index.new.js"
   },
   "author": "Henry Le",
   "license": "ISC"
