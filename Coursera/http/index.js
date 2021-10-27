@@ -93,11 +93,12 @@ const server = http.createServer((req, res) => {
 
           // custom Header, accept Object type with any (k,v) pair
           res.writeHead(200, "Great news! File is found", {
-            "Content-Type":"text/html",
-            "X-Powered-by": "bacon",
-            "setCookies":"anything",
-            "Author": "Henry Le",
-            "Date-Received": `${new Date()}`
+            "Content-Type":"text/html"
+            ,"X-Powered-by": "bacon"
+            ,"setCookies":"anything"
+            ,"Author": "Henry Le"
+            ,"Date-Received": `${new Date()}`
+            // ,"Content-Length": Buffer.byteLength(body),
           });
           fs.ReadStream(filePath).pipe(res);
 
