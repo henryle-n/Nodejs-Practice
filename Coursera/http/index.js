@@ -65,9 +65,15 @@ const server = http.createServer((req, res) => {
   
     fs.stat(filePath, (error, stats) => {
         if (error) {
-            res.setHeader("Content-Type", "text/html");
-            res.statusCode = 404;
-            res.write(`<html><body><p>this is the catched error: ${e}</p>`);
+
+            // using writeHead
+            res.writeHead(404, "File not Found. Check your link and try again", {
+              "Content-Type" : "text/html"
+              ,"Author" : "Henry Le"
+            });
+            // res.setHeader("Content-Type", "text/html");
+            // res.statusCode = 404;
+            res.write(`<html><body><p>this is the catched error: ${error}</p>`);
             res.end(
             `<p>Error: ${res.statusCode} - Requested URL: ${fileURL} doesn't exist!</p><html><body>`
             );
@@ -81,8 +87,18 @@ const server = http.createServer((req, res) => {
           console.log("Path is file:", stats.isFile());
           console.log("Path is directory:", stats.isDirectory());
 
-          res.setHeader("Content-Type", "text/html");
-          res.statusCode = 200;
+          //simple Header
+          // res.setHeader("Content-Type", "text/html");
+          // res.statusCode = 200;
+
+          // custom Header, accept Object type with any (k,v) pair
+          res.writeHead(200, "Great news! File is found", {
+            "Content-Type":"text/html",
+            "X-Powered-by": "bacon",
+            "setCookies":"anything",
+            "Author": "Henry Le",
+            "Date-Received": `${new Date()}`
+          });
           fs.ReadStream(filePath).pipe(res);
 
         }
