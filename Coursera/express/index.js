@@ -14,10 +14,14 @@ const app = express();
 app.use(mg('dev'));
 
 // serve a static file from local storage
+// by default, express will find and serve index.html
 app.use(express.static(__dirname + '/public'));
+
+console.log("__dirname : ", __dirname);
 
 // create express request handlers
 app.use((req, res, next)=>{
+    
     // no need to log b/c morgan will serve enough logging info
     // console.log("header :: ", req.headers);
 
