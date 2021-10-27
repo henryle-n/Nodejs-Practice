@@ -1,0 +1,17 @@
+{
+  "name": "coursera-express",
+  "version": "1.0.0",
+  "description": "simple express",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo test",
+    "start": "node index"
+  },
+  "author": "Henry Le",
+  "license": "ISC",
+  "dependencies": {
+    "all": "0.0.0",
+    "express": "^4.17.1",
+    "morgan": "^1.10.0"
+  }
+}

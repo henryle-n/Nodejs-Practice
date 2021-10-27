@@ -6,7 +6,7 @@
   ,"type": "module"
   ,"scripts": {
     "test": "echo test is run"
-    ,"start": "node index.js"
+    ,"start": "node index"
   },
   "author": "Henry Le",
   "license": "UNLICENSED"

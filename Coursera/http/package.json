@@ -6,7 +6,7 @@
   "type":"commonjs",
   "scripts": {
     "test": "echo testing",
-    "start": "node index.js"
+    "start": "node index"
   },
   "author": "Henry Le",
   "license": "ISC"
