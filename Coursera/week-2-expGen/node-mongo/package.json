@@ -1,0 +1,17 @@
+{
+  "name": "node-mongo",
+  "version": "1.0.0",
+  "description": "",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo test",
+    "start": "node index"
+  },
+  "author": "Henry Le",
+  "license": "ISC",
+  "dependencies": {
+    "assert": "^2.0.0",
+    "mongod": "^2.0.0",
+    "mongodb": "^4.1.3"
+  }
+}
