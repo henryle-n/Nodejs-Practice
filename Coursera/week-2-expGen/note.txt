@@ -1,0 +1,9 @@
+express-generator allows me to create an express app
+with a file structure templates with needed dependencies
+save time!
+
+>>> install express-generator as a global package '-g' tag
+npm install -g express-generator
+
+>>> use generator to create conFusionServer
+express conFusionServer
