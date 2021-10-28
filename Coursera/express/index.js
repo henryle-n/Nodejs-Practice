@@ -2,7 +2,7 @@
 const express = require('express');
 const http = require('http');
 const mg = require('morgan');
-// const bPar = require('body-parser');
+const calcRouter = require('./routes/calcRouter'); 
 
 // server parameters
 const hostName = 'localhost';
@@ -11,47 +11,18 @@ const port = 3000;
 // create express app
 const app = express();
 
-// init body parser to populate req.body to JSON format
-// app.use(bPar.json()) // deprecated
-// need to use express.json() for 4.16.0 && up
-
-var x;
-var b; 
+// simple mock linear equation
 const k = 1.6;
+var yLin = (x, b) => k * x + b;
 
-var yLin = (x, b) => k*x + b;
-
-// init morgan
+// set up middleware morgan
 app.use(mg('dev'));
-
-
-// init json()
+// set up middleware morgan json() within express
+// bodyParser() is deprecated
 app.use(express.json());
 
-// handlers
-app.all('/compute/:eqID', (req, res, next) => {
-    res.writeHead(200, {
-        'Content-Type': 'text/plain',
-        "Author": "Henry Le"
-    });
-    next();
-});
-app.get("/compute/:eqID", (req, res, next) => {
-    res.end(`we got a result of ${req.params.eqID} with method "${req.method}" : y = ${k} * ${req.body.xVal} + ${req.body.bVal} = ${yLin(parseInt(req.body.xVal), parseInt(req.body.bVal))}`)
-})
-app.post("/compute/:eqID", (req, res, next) => {
-    res.statusCode = 403;
-    res.write(`Received :: (x, b) value = (${req.body.xVal}, ${req.body.bVal})
-    `);
-
-    res.end(`Adding result of ${req.method} method: ${yLin(+req.body.xVal,+req.body.bVal)} to DB`);
-})
-app.put("/compute/:eqID", (req, res, next) => {
-    res.end(`"${req.method}" method is sending updates of (${req.body.xVal}, ${req.body.bVal}) for equation ID: ${req.params.eqID}`);
-})
-app.delete("/compute/:eqID", (req, res, next) => {
-    res.end(`Deleting equation ID: ${req.params.eqID}`);
-})
+// set up Router
+app.use('/compute', calcRouter);
 
 // serve a static file from local storage
 // by default, express will find and serve index.html
