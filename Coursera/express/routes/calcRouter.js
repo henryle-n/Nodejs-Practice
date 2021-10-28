@@ -4,9 +4,15 @@ const express = require('express');
 // create router from express lib
 const calcRouter = express.Router()
 
+// simple mock linear equation
+const k = 1.6;
+var yLin = (x, b) => k * x + b;
+
+// set up json() parser
 calcRouter.use(express.json());
 
-calcRouter.route('/')
+// routing group init
+calcRouter.route('/:eqID')
 .all((req, res, next) => {
     res.writeHead(200, {
         'Content-Type': 'text/plain',
