@@ -6,7 +6,7 @@ const mg = require('morgan');
 
 // server parameters
 const hostName = 'localhost';
-const port = 3100;
+const port = 3000;
 
 // create express app
 const app = express();
@@ -25,30 +25,32 @@ var yLin = (x, b) => k*x + b;
 app.use(mg('dev'));
 
 
+// init json()
+app.use(express.json());
+
 // handlers
-app.all('/compute', (req, res, next) => {
+app.all('/compute/:eqID', (req, res, next) => {
     res.writeHead(200, {
         'Content-Type': 'text/plain',
         "Author": "Henry Le"
     });
     next();
 });
-app.get("/compute/:eq1", (req, res, next) => {
-    res.end(`we got a result: ${yLin(1, 5)}`)
+app.get("/compute/:eqID", (req, res, next) => {
+    res.end(`we got a result of ${req.params.eqID} with method "${req.method}" : y = ${k} * ${req.body.xVal} + ${req.body.bVal} = ${yLin(parseInt(req.body.xVal), parseInt(req.body.bVal))}`)
 })
-app.post("/compute/:eq1", (req, res, next) => {
-    res.write(`Received :: 
-    (x, b) value = (${req.body.xVal}, ${req.body.bVal})
+app.post("/compute/:eqID", (req, res, next) => {
+    res.statusCode = 403;
+    res.write(`Received :: (x, b) value = (${req.body.xVal}, ${req.body.bVal})
     `);
-    res.end(`Adding result of ${req.method} method: ${yLin(req.body.xVal,req.body.bVal )} to DB`);
+
+    res.end(`Adding result of ${req.method} method: ${yLin(+req.body.xVal,+req.body.bVal)} to DB`);
 })
-app.put("/compute/:eq1", (req, res, next) => {
-    res.statusCode = 403;
-    res.end(`${req.method} method is NOT supported!`);
+app.put("/compute/:eqID", (req, res, next) => {
+    res.end(`"${req.method}" method is sending updates of (${req.body.xVal}, ${req.body.bVal}) for equation ID: ${req.params.eqID}`);
 })
-app.delete("/compute/:eq1", (req, res, next) => {
-    res.statusCode = 403;
-    res.end(`${req.method} method is NOT supported!`);
+app.delete("/compute/:eqID", (req, res, next) => {
+    res.end(`Deleting equation ID: ${req.params.eqID}`);
 })
 
 // serve a static file from local storage
@@ -59,17 +61,20 @@ app.use(express.static(__dirname + '/public'));
 // create express request handlers
 // next is for middle ware ops which Node http doesn't have
 // express in other hand, can handle middleware
-app.use((req, res, next)=>{
+app.use((error, req, res, next)=>{
 
    
-    // console.log("header :: ", req.headers);  // no need to log b/c morgan will serve enough logging info
+    if (!error){
 
-    // create a response header to client
-    res.writeHead(200, {
-        "Content-Type" : "text/html"
-        , "Author": "Henry Le"
-    });
-    res.end(`<html><body><p>this is a simple Express</p><html><body>`)
+        // console.log("header :: ", req.headers);  // no need to log b/c morgan will serve enough logging info
+        // create a response header to client
+        res.writeHead(200, {
+            "Content-Type" : "text/html"
+            , "Author": "Henry Le"
+        });
+        res.end(`<html><body><p>this is a simple Express</p><html><body>`)
+    }
+    else res.writeHead(500, 'Something broke!');
 })
 
 // start up a server 
