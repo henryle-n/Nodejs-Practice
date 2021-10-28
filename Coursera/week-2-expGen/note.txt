@@ -7,3 +7,8 @@ npm install -g express-generator
 
 >>> use generator to create conFusionServer
 express conFusionServer
+
+>>> install dependencies in package.json
+npm install
+
+>>> npm start
