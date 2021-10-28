@@ -20,7 +20,7 @@ app.use(morgan('dev'));
 // set up json() in express library 4.16.0
 app.use(express.json());
 
-// set up Router
+// set up Routers
 app.use('/dishes', dishRouter);
 app.use('/leaders', leaderRouter);
 app.use('/promotions', promoRouter);
