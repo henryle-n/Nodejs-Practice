@@ -5,39 +5,66 @@ const mongoClient = require('mongodb').MongoClient;
 // https: //nodejs.org/api/assert.html#assertequalactual-expected-message
 const assert = require('assert');
 
+// import ops js
+const dboper = require('./operations');
+
+
 // connect to mongo DB & define DB name
 const url = 'mongodb://localhost:27017/';
-const dbName ="conFusion";
+const dbName = "conFusion";
 
-mongoClient.connect(url, (err, client)=>{
+
+
+
+var document = {
+    name: "DK Donut",
+    description: "DK yummy donut"
+};
+
+var newDoc = {
+    name: "DK Donut",
+    description: "updated DK donut"
+};
+
+mongoClient.connect(url, (err, client) => {
     assert.equal(err, null);
     console.log('connected to server');
 
     // connect to DB with name = dbName
     const db = client.db(dbName);
+    var collection='dishes';
 
-    // connect to collection where data is inserted to 
-    const collection = db.collection('dishes');
+    // we have 3 collections: dishes, leaders, promotions
+    // const collection = db.collection('dishes');
     
-    // perform insert ops with one record
-    collection.insertOne({"name":"deli 6", "description":"Deli d7 from Butan"}, (err, result)=>{
-        assert.equal(err, null);
-        console.log('After insert: \n');
-        console.log(result.ops);
+    // connect to collection where data is inserted to 
 
-        collection.find({}).toArray((err, docs)=>{
-            assert.equal(err, null);
+    //use dbops to CRUD db
+    dboper.insertDocument(db, document,
+        collection, (result) => {
+            console.log("Insert Document:\n", result.ops);
 
-            console.log('Record found: \n');
-            console.log(docs);
+            dboper.findDocuments(db, collection, (docs) => {
+                console.log("Found Documents:\n", docs);
 
-            db.dropCollection('dishes', (err, result)=>{
-                assert.equal(err, null);
+                dboper.updateDocument(db, {
+                        name: document.name
+                    }, {
+                        description: newDoc.description
+                    }, collection,
+                    (result) => {
+                        console.log("Updated Document:\n", result.result);
 
-                console.log('closing connection');
-                client.close();
+                        dboper.findDocuments(db, collection, (docs) => {
+                            console.log("Found Updated Documents:\n", docs);
+
+                            db.dropCollection(collection, (result) => {
+                                console.log("Dropped Collection: ", result);
+
+                                client.close();
+                            });
+                        });
+                    });
             });
         });
-    });
-
 });
