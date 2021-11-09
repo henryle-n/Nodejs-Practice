@@ -14,57 +14,83 @@ const url = 'mongodb://localhost:27017/';
 const dbName = "conFusion";
 
 
-
-
-var document = {
-    name: "DK Donut",
-    description: "DK yummy donut"
+var document1 = {
+    name: "2 DK Donut",
+    description: "2 to ins DK yummy donut"
 };
 
-var newDoc = {
-    name: "DK Donut",
-    description: "updated DK donut"
+var document2 = [{
+        name: "22 DK Donut",
+        description: "22 to ins DK yummy donut"
+    },
+    {
+        name: "23 DK Donut",
+        description: "23 to ins DK yummy donut"
+    },
+
+];
+
+
+
+var newDoc1 = {
+    name: "2 DK Donut",
+    description: "2 updated DK donut"
 };
 
-mongoClient.connect(url, (err, client) => {
-    assert.equal(err, null);
-    console.log('connected to server');
+var newDoc2 = {
+    name: "23 DK Donut",
+    description: "23 updated DK donut"
+};
 
-    // connect to DB with name = dbName
-    const db = client.db(dbName);
-    var collection='dishes';
+var collection = 'dishes';
 
-    // we have 3 collections: dishes, leaders, promotions
-    // const collection = db.collection('dishes');
-    
-    // connect to collection where data is inserted to 
+mongoClient
+    .connect(url)
+    .then(client => {
+        console.log('connected to server');
 
-    //use dbops to CRUD db
-    dboper.insertDocument(db, document,
-        collection, (result) => {
-            console.log("Insert Document:\n", result.ops);
+        // connect to DB with name = dbName
+        const db = client.db(dbName);
+        // var collection = 'dishes';
 
-            dboper.findDocuments(db, collection, (docs) => {
+        // we have 3 collections: dishes, leaders, promotions
+        // const collection = db.collection('dishes');
+        // connect to collection where data is inserted to 
+
+        //use dbops to CRUD db
+        dboper.insertDocuments(db, document2,
+                collection).then(result => {
+                console.log("Inserted document:\n", result.insertedId);
+                console.log('--------------------');
+
+                return dboper.findDocuments(db, collection)
+            })
+            .then(docs => {
                 console.log("Found Documents:\n", docs);
 
-                dboper.updateDocument(db, {
-                        name: document.name
-                    }, {
-                        description: newDoc.description
-                    }, collection,
-                    (result) => {
-                        console.log("Updated Document:\n", result.result);
+                console.log('--------------------');
+                return dboper.updateDocument(db, {
+                    name: document2[0].name
+                }, {
+                    description: newDoc2.description
+                }, collection);
+            })
+            .then(result => {
+                console.log("Updated Document:\n", result);
 
-                        dboper.findDocuments(db, collection, (docs) => {
-                            console.log("Found Updated Documents:\n", docs);
+                console.log('--------------------');
+                return dboper.findDocuments(db, collection);
+            })
+            .then(docs => {
+                console.log("Found Updated Documents:\n", docs);
 
-                            db.dropCollection(collection, (result) => {
-                                console.log("Dropped Collection: ", result);
+                console.log('--------------------');
+                return db.dropCollection(collection)
+            }).then(result => {
+                console.log("Dropped Collection: ", result);
 
-                                client.close();
-                            });
-                        });
-                    });
+                console.log('--------------------');
+                return client.close();
             });
-        });
-});
+    })
+    .catch(err => console.log('exception has occur: ' + err))
